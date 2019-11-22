@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.neuedu.ssm.mapper.AdminMapper">
+	<sql id="baseSql">
+		id,admin_name,admin_password
+	</sql>
+	<select id="findAll" resultMap="getAdmins">
+		select 
+		<include refid="baseSql"/>
+		from t_admin
+	</select>
+	<select id="findById"
+		resultType="Admin" parameterType="int">
+		select 
+		<include refid="baseSql"/>
+		from t_admin where id=#{id}
+	</select>
+	<insert id="insert" parameterType="Admin">
+		insert into t_admin values(null,#{aname},md5(#{apwd}))
+	</insert>
+	
+	<update id="update" parameterType="Admin">
+		update t_admin set admin_name=#{aname},admin_password=md5(#{apwd}) where id=#{id}
+	</update>
+	
+	<delete id="delete" parameterType="int">
+		delete from t_admin where id=#{id}
+	</delete>
+	<select id="findByName" parameterType="string" resultMap="getAdmins">
+		select 
+		<include refid="baseSql"/>
+		from t_admin where admin_name=#{aname}
+	</select>
+	<resultMap type="Admin" id="getAdmins">
+		<id property="id" column="id"/>
+		<result property="aname" column="admin_name"/>
+		<result property="apwd" column="admin_password"/>
+	</resultMap>
+</mapper>

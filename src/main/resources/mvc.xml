@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+    http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/mvc 
+    http://www.springframework.org/schema/mvc/spring-mvc.xsd
+    http://www.springframework.org/schema/context 
+    http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<context:component-scan
+		base-package="com.neuedu.ssm.controller" />
+	<context:annotation-config />
+	<mvc:annotation-driven />
+
+	<!-- <bean id="jspViewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver"> 
+		<property name="viewClass" value="org.springframework.web.servlet.view.JstlView" 
+		/> //结果视图的前缀 <property name="prefix" value="/WEB-INF/jsp/" /> 结果视图的后缀 <property 
+		name="suffix" value="" /> </bean> -->
+	<bean id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver" />
+	<!-- <mvc:resources location="/js/" mapping="/js/*.js"/> -->
+	<!-- <mvc:resources location="/css/" mapping="/css/*.css"/> -->
+	<!-- 配置Json转换器 -->
+	<bean id="stringConverter"
+		class="org.springframework.http.converter.StringHttpMessageConverter">
+		<property name="supportedMediaTypes">
+			<list>
+				<value>text/plain;charset=utf-8</value>
+			</list>
+		</property>
+	</bean>
+	<bean id="jsonConverter"
+		class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter" />
+	<bean
+		class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
+		<property name="messageConverters">
+			<list>
+				<ref bean="stringConverter" />
+				<ref bean="jsonConverter" />
+			</list>
+		</property>
+	</bean>
+	<mvc:annotation-driven/>
+	<mvc:default-servlet-handler/>
+	  <!-- 拦截器的配置 -->
+   <!--  <mvc:interceptors>
+    	<mvc:interceptor>
+    	/**：包括路径及其子路径 
+    		如果是/admin/*-拦截的是/admin/add,/admin/list,/admin/user/add不会被拦截
+    		如果是/**-以上所有均被拦截
+    	
+    		<mvc:mapping path="/**"/>
+    		<bean class="com.neuedu.interceptor.LoginInterceptor">
+    			<property name="allowPaths">
+    				<list>
+    					<value>login</value>
+    				</list>
+    			</property>
+    		</bean> 
+    	</mvc:interceptor>
+    </mvc:interceptors> -->
+</beans>

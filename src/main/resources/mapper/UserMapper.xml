@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.neuedu.ssm.mapper.UserMapper">
+	<sql id="baseSql">
+		id,username,password,phone,addr,rdate
+	</sql>
+	<select id="findAll" resultMap="getUsers">
+		select 
+		<include refid="baseSql"/>
+		from t_user
+	</select>
+	<select id="findById"
+		resultType="User" parameterType="int">
+		select 
+		<include refid="baseSql"/>
+		from t_user where id=#{id}
+	</select>
+	<insert id="insert" parameterType="User">
+		insert into t_user(id,username,password,phone,addr,rdate) values(null,#{userName},md5(#{userPassword}),#{userPhone},#{addr},now())
+	</insert>
+	
+	<update id="update" parameterType="User">
+		update t_user set username=#{userName},password=md5(#{userPassword}),phone=#{userPhone},addr=#{addr},rdate=#{userRegister } where id=#{id}
+	</update>
+	
+	<delete id="delete" parameterType="int">
+		delete from t_user where id=#{id}
+	</delete>
+	<resultMap type="User" id="getUsers">
+		<id property="id" column="id"/>
+		<result property="userName" column="username"/>
+		<result property="userPassword" column="password"/>
+		<result property="userPhone" column="phone"/>
+		<result property="addr" column="addr"/>
+		<result property="userRegister" column="rdate"/>
+	</resultMap>
+</mapper>
